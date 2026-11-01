@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#153b70">
+<title>Study Master VVI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial;background:#f1f5fb;color:#17243a}
+header{background:#153b70;color:white;text-align:center;padding:28px 12px}
+header h1{margin:0;font-size:27px}
+header p{margin-bottom:0}
+nav{display:flex;justify-content:center;flex-wrap:wrap;background:white;padding:10px;gap:7px}
+button{cursor:pointer}
+nav button,.btn{border:0;border-radius:8px;padding:11px 14px;background:#e5edfa;color:#153b70;font-weight:bold}
+nav button.active,.btn{background:#153b70;color:white}
+main{max-width:850px;margin:auto;padding:16px}
+.card{background:white;padding:18px;border-radius:13px;margin:13px 0;box-shadow:0 2px 9px #0001}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.tile{background:#e7efff;padding:20px 8px;text-align:center;border-radius:12px}
+.tile b{display:block;margin-top:8px}
+h2{color:#153b70}
+.option{display:block;width:100%;padding:12px;margin:8px 0;background:white;border:1px solid #ccd5e3;border-radius:8px;text-align:left}
+footer{text-align:center;padding:20px;color:#667}
+</style>
+</head>
+<body>
+<header>
+<h1>📚 STUDY MASTER VVI</h1>
+<p>आपकी पढ़ाई, आपकी सफलता</p>
+<p>Learn Today, Lead Tomorrow</p>
+</header>
+<nav>
+<button class="active" onclick="show('home',this)">Home</button>
+<button onclick="show('classes',this)">Classes</button>
+<button onclick="show('notes',this)">Notes</button>
+<button onclick="show('quiz',this)">Online Test</button>
+<button onclick="show('about',this)">About</button>
+</nav>
+<main>
+<section id="home">
+<div class="card">
+<h2>स्वागत है विद्यार्थी! 🎓</h2>
+<p>Study Master VVI में आपका स्वागत है। यहां पढ़ें, सीखें और अपनी तैयारी मजबूत बनाएं।</p>
+</div>
+<h2>हमारी सुविधाएं</h2>
+<div class="grid">
+<div class="tile">📖<b>Study Notes</b></div>
+<div class="tile">⭐<b>VVI Questions</b></div>
+<div class="tile">📝<b>Online Test</b></div>
+<div class="tile">🎥<b>Video Classes</b></div>
+</div>
+<div class="card">
+<h3>अपनी पढ़ाई शुरू करें</h3>
+<button class="btn" onclick="show('classes')">कक्षाएं देखें</button>
+</div>
+</section>
+<section id="classes" hidden>
+<h2>अपनी कक्षा चुनें</h2>
+<div class="card" id="classList"></div>
+</section>
+<section id="notes" hidden>
+<h2>Study Notes</h2>
+<div class="card">
+<p>यहां जल्द ही नोट्स और PDF जोड़े जाएंगे।</p>
+<p>हिंदी | अंग्रेजी | गणित | विज्ञान | इतिहास | राजनीति विज्ञान</p>
+</div>
+</section>
+<section id="quiz" hidden>
+<h2>Online MCQ Test</h2>
+<div class="card">
+<h3 id="question"></h3>
+<div id="options"></div>
+<p id="result"></p>
+<button class="btn" onclick="nextQuestion()">अगला सवाल</button>
+<p id="score">स्कोर: 0</p>
+</div>
+</section>
+<section id="about" hidden>
+<h2>हमारे बारे में</h2>
+<div class="card">
+<h3>Study Master VVI</h3>
+<p>सभी विद्यार्थियों के लिए पढ़ाई का एक सरल ऑनलाइन प्लेटफॉर्म।</p>
+</div>
+</section>
+</main>
+<footer>© 2026 Study Master VVI</footer>
+<script>
+function show(id,btn){
+document.querySelectorAll('main section').forEach(s=>s.hidden=true);
+document.getElementById(id).hidden=false;
+document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+if(btn)btn.classList.add('active');
+}
+let list=document.getElementById('classList');
+for(let i=1;i<=12;i++){
+let b=document.createElement('button');
+b.className='option';
+b.textContent='कक्षा '+i;
+b.onclick=()=>alert('कक्षा '+i+' के नोट्स जल्द जोड़े जाएंगे।');
+list.appendChild(b);
+}
+let questions=[
+{q:'भारत की राजधानी क्या है?',o:['पटना','दिल्ली','मुंबई','कोलकाता'],a:1},
+{q:'भारत का राष्ट्रीय पशु कौन है?',o:['शेर','हाथी','बाघ','घोड़ा'],a:2},
+{q:'भारत का संविधान कब लागू हुआ?',o:['1947','1950','1949','1952'],a:1}
+];
+let index=0,score=0,answered=false;
+function loadQuestion(){
+let q=questions[index];
+document.getElementById('question').textContent=q.q;
+let box=document.getElementById('options');
+box.innerHTML='';
+document.getElementById('result').textContent='';
+answered=false;
+q.o.forEach((v,i)=>{
+let b=document.createElement('button');
+b.className='option';
+b.textContent=v;
+b.onclick=()=>{
+if(answered)return;
+answered=true;
+if(i===q.a){
+score++;
+document.getElementById('result').textContent='सही जवाब! 🎉';
+}else{
+document.getElementById('result').textContent='सही उत्तर: '+q.o[q.a];
+}
+document.getElementById('score').textContent='स्कोर: '+score;
+};
+box.appendChild(b);
+});
+}
+function nextQuestion(){
+index=(index+1)%questions.length;
+loadQuestion();
+}
+loadQuestion();
+</script>
+</body>
+</html>
